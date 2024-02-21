@@ -1,0 +1,9 @@
+application:
+  name: go-gin-server
+server:
+  http:
+    address: localhost
+    port: 8090
+log:
+  level: DEBUG
+  format: text
