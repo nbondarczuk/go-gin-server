@@ -20,4 +20,5 @@ docker/help:
 	@echo
 	@echo 'Usage:'
 	@echo '    make docker/image          create docker image'
+	@echo '    make docker/publish        publish docker image'
 	@echo '    make docker/clean          clean docker image'
