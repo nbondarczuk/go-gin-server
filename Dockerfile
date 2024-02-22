@@ -28,6 +28,7 @@ WORKDIR /work
 COPY --from=builder /workpath/bin/go-gin-server /work/go-gin-server
 COPY config/config.yaml /work/config/config.yaml
 USER 1001
+EXPOSE 8090
 
 # run the binary
-CMD ["./go-gin-server"]
+ENTRYPOINT ["./go-gin-server"]
