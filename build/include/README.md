@@ -19,24 +19,20 @@ some handy make targets useful in building go programs without any specific IDE.
 
 - golint
 
-go install golang.org/x/lint/golint@latest
+```go install golang.org/x/lint/golint@latest```
 
-- golangci-lint
+- golangci-lint - https://golangci-lint.run/usage/install/
 
-Vide: https://golangci-lint.run/usage/install/
-
-Mac OS X
-
-brew install golangci-lint
+```brew install golangci-lint```
 
 - goimports
 
-go install golang.org/x/tools/cmd/goimports@latest
+```go install golang.org/x/tools/cmd/goimports@latest```
 
 - godef
 
-go get -u github.com/rogpeppe/godef
+```go get -u github.com/rogpeppe/godef```
 
-- gosec
+- gosec - https://github.com/securego/gosec
 
-go install github.com/securego/gosec/v2/cmd/gosec@latest
+```go install github.com/securego/gosec/v2/cmd/gosec@latest```
