@@ -1,88 +1,93 @@
 package config
 
 import (
+	"io"
 	"os"
 
 	"github.com/spf13/viper"
 )
 
 var (
-	// Options stores all loaded optinos.
-	Options *ConfigOptions
+	options        *Options
+	configPath     string
+	configFileName = DefaultConfigFileName
 )
 
-type (
-	// ConfigOptions is a viper embedding.
-	ConfigOptions struct {
-		*viper.Viper
-	}
-)
+// Options is a viper embedding.
+type Options struct {
+	*viper.Viper
+}
 
-// Init config options from file, flags and env vars.
-func Init() (err error) {
-	Options, err = NewConfigOptions()
-	if err != nil {
+// Init loads configuration first using defaults, then from a config file.
+func Init() error {
+	// load config from env variables
+	options = &Options{viper.New()}
+	options.Viper.AutomaticEnv()
+
+	// Set defaults for all env application settings
+	initDefaults()
+
+	// Use config file to override dafaults.
+	if err := loadConfigFromFile(); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-// SetDefaults sets all default option values.
-func (o *ConfigOptions) SetDefaults() {
-	// application settings
-	o.Viper.SetDefault("application.name", DefaultApplicationName)
+// InitForTest does the same as Init but it does not use config file.
+func InitForTest(input io.Reader) error {
+	options = &Options{viper.New()}
+	options.Viper.AutomaticEnv()
 
-	// HTTP service settings
-	o.Viper.SetDefault("server.http.address", DefaultServerHTTPAddress)
-	o.Viper.SetDefault("server.http.port", DefaultServerHTTPPort)
+	// Set defaults for all env application settings
+	initDefaults()
+
+	// Read config from provided reader.
+	if input != nil {
+		return loadConfig(input)
+	}
+
+	return nil
+}
+
+func initDefaults() {
+	options.Viper.SetDefault("application.name", DefaultApplicationName)
+	options.Viper.SetDefault("server.http.address", DefaultServerHTTPAddress)
+	options.Viper.SetDefault("server.http.port", DefaultServerHTTPPort)
 
 	// logging settings
-	o.Viper.SetDefault("log.level", DefaultLogLevel)
-	o.Viper.SetDefault("log.format", DefaultLogFormat)
+	options.Viper.SetDefault("log.level", DefaultLogLevel)
+	options.Viper.SetDefault("log.format", DefaultLogFormat)
 }
 
-// NewConfigOptions creates all config env.
-func NewConfigOptions() (*ConfigOptions, error) {
-	// Create Config
-	o := &ConfigOptions{
-		Viper: viper.New(),
+func loadConfigFromFile() error {
+	v := options.Viper
+
+	// Testing may override this path.
+	if configPath == "" {
+		configPath, err := os.Getwd()
+		if err != nil {
+			return errNoWorkingDir
+		}
+		configPath += "/config"
 	}
 
-	// Load config from env variables.
-	o.Viper.AutomaticEnv()
-
-	// Load hardcoded defaults.
-	o.SetDefaults()
-
-	// Load config.yaml file.
-	err := o.LoadFromFile()
-	if err != nil {
-		return nil, err
-	}
-
-	return o, nil
-}
-
-// LoadFromFile uses config file like $CWD/config/config.yaml.
-func (o *ConfigOptions) LoadFromFile() error {
-	path, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-	path += "/config"
-
-	v := o.Viper
-	v.AddConfigPath(path)
-	v.SetConfigName("config")
+	v.AddConfigPath(configPath)
+	v.SetConfigName(configFileName)
 	v.SetConfigType("yaml")
 
-	err = v.ReadInConfig()
+	err := v.ReadInConfig()
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func loadConfig(input io.Reader) error {
+	options.Viper.SetConfigType("yaml")
+	return viper.ReadConfig(input)
 }
 
 // Show prints all loaded options in the log.

@@ -1,15 +1,14 @@
 package main
 
 import (
-	"go-gin-server/internal/server"
 	"go-gin-server/internal/config"
 	"go-gin-server/internal/logger"
+	"go-gin-server/internal/server"
 )
 
 var version string
 
 func main() {
-	// Load config (with no logger created yet).
 	if err := config.Init(); err != nil {
 		panic(err)
 	}

@@ -2,7 +2,11 @@
 # This file provides all common test targets.
 #
 
-test/unit:
+.PHONY: test
+test:
+	go test ./...
+
+test/verbose:
 	go test -v -cover ./...
 
 test/cover:
@@ -24,7 +28,8 @@ test/help:
 	@echo
 	@echo 'Usage:'
 	@echo '    make test/unit             run unit tests'
-	@echo '    make test/cover            run unit tests with coverage'
-	@echo '    make test/run              start run tests'
+	@echo '    make test/unit/verbose     run unit tests with verbose level'
+	@echo '    make test/unit/cover       run unit tests with coverage and start default broweser'
+	@echo '    make test/run              run run tests'
 	@echo '    make test/integration      run integration tests with docker compose'
 	@echo '    make test/performance      run performance tests with docker compose'
