@@ -65,19 +65,17 @@ func loadConfigFromFile() error {
 	v := options.Viper
 
 	// Testing may override this path.
-	if configPath == "" {
-		configPath, err := os.Getwd()
-		if err != nil {
-			return errNoWorkingDir
-		}
-		configPath += "/config"
+	configPath, err := os.Getwd()
+	if err != nil {
+		return errNoWorkingDir
 	}
+	configPath += "/config"
 
 	v.AddConfigPath(configPath)
 	v.SetConfigName(configFileName)
 	v.SetConfigType("yaml")
 
-	err := v.ReadInConfig()
+	err = v.ReadInConfig()
 	if err != nil {
 		return err
 	}
@@ -88,9 +86,4 @@ func loadConfigFromFile() error {
 func loadConfig(input io.Reader) error {
 	options.Viper.SetConfigType("yaml")
 	return viper.ReadConfig(input)
-}
-
-// Show prints all loaded options in the log.
-func Show() {
-
 }

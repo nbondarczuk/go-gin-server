@@ -14,7 +14,7 @@ some handy make targets useful in building go programs without any specific IDE.
 - goimports
 - godef
 
-### Installation instructions for Go external tools
+### Installation instructions for Go external tools (really good stuff)
 
 #### golint
 

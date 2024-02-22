@@ -7,9 +7,9 @@ a generic set of make file rules. They are usually less standardized
 then Golang web servers. The build rules facilitate Golang compilation,
 docker image creation and running docker compose local integration tests.
 
-## Silver bullets (reuse wellcome)
+## Silver bullets
 
-### Gin server
+### Gin server template
 
 The server provides the most simple access point: /health. It has basic
 configuration. It uses standard kibrary package slog.
@@ -35,7 +35,7 @@ how to build docker image in 2-stage process.
 
 The curl script is used to test basic server run in the local box.
 
-### Intgration testing
+### Integration testing
 
 This is docker used in docker compose setup. Just simple test of the functionality
 is done here.
