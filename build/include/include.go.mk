@@ -17,6 +17,9 @@ go/vet:
 go/lint:
 	golangci-lint run
 
+go/sec:
+	gosec ./...
+
 go/tar: clean
 	tar -cvzf /tmp/$(TARGET).tar.gz .env .gitignore *
 
