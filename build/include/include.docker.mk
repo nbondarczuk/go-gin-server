@@ -5,11 +5,11 @@
 BUILD_ARGS=--build-arg VERSION=${VERSION}
 
 docker/image:
-	docker build -f Dockerfile -t $(REPOSITORY)/$(TARGET):$(VERSION) . $(BUILD_ARGS)
+	DOCKER_BUILDKIT=1 docker build -f Dockerfile -t $(REPOSITORY)/$(TARGET):$(VERSION) . $(BUILD_ARGS)
 
 docker/publish: committed
 	docker tag $(REPOSITORY)/$(TARGET):$(VERSION) $(TARGET):$(VERSION)
-	docker push $(REPOSITORY)/$(TARGET):$(VERSION)
+	DOCKER_BUILDKIT=1 docker push $(REPOSITORY)/$(TARGET):$(VERSION)
 
 docker/clean:
 	docker rmi $(TARGET)

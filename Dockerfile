@@ -6,21 +6,21 @@ ENV GOPATH /go
 
 ENV GOCACHE /go/caches/go-build
 
-RUN apk add git alpine-sdk
+RUN --mount=type=cache,target="/go/caches/go-build" apk add git alpine-sdk
 
 ADD . /workpath
 
 WORKDIR /workpath
 
 # build the source
-RUN make go/tidy
-RUN make
+RUN --mount=type=cache,target="/go/caches/go-build" make go/tidy
+RUN --mount=type=cache,target="/go/caches/go-build" make
 
 # use a minimal alpine image
 FROM alpine:latest
 
 # add ca-certificates in case you need them
-RUN apk update && apk add ca-certificates
+RUN --mount=type=cache,target="/go/caches/go-build" apk update && apk add ca-certificates
 
 # set working directory
 WORKDIR /work
