@@ -26,7 +26,8 @@ RUN --mount=type=cache,target="/go/caches/go-build" apk update && apk add ca-cer
 WORKDIR /work
 
 COPY --from=builder /workpath/bin/go-gin-server /work/go-gin-server
-COPY config/config.yaml /work/config/config.yaml
+COPY --from=builder /workpath/config/config.yaml /work/config/config.yaml
+
 USER 1001
 EXPOSE 8090
 
