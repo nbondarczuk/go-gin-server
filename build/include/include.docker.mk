@@ -22,10 +22,10 @@ docker/compose/down:
 	docker-compose --project-directory=${PROJECT_DIR} down
 
 docker/compose/logs:
-	docker-compose --project-directory=${PROJECT_DIR} logs
+	docker-compose --project-directory=${PROJECT_DIR} logs -f
 
 docker/compose/ps:
-	docker-compose --project-directory=${PROJECT_DIR} ps
+	docker-compose --project-directory=${PROJECT_DIR} ps -a
 
 docker/help:
 	@echo

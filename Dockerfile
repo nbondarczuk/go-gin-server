@@ -20,7 +20,7 @@ RUN --mount=type=cache,target="/go/caches/go-build" make
 FROM alpine:latest
 
 # add ca-certificates in case you need them
-RUN --mount=type=cache,target="/go/caches/go-build" apk update && apk add ca-certificates
+RUN --mount=type=cache,target="/go/caches/go-build" apk update && apk add ca-certificates curl bash
 
 # set working directory
 WORKDIR /work
