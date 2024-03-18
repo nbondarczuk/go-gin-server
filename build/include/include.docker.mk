@@ -7,6 +7,7 @@ PROJECT_DIR=build/compose
 PROJECT_OPTIONS=--project-directory=${PROJECT_DIR} \
 	--file ${PROJECT_DIR}/docker-compose.yml \
 	--file ${PROJECT_DIR}/docker-compose-prometheus.yml \
+	--file ${PROJECT_DIR}/docker-compose-grafana.yml \
 	--file ${PROJECT_DIR}/docker-compose-mongodb.yml \
 	--file ${PROJECT_DIR}/docker-compose-redis.yml
 
