@@ -29,7 +29,7 @@ COPY --from=builder /workpath/bin/go-gin-server /work/go-gin-server
 COPY --from=builder /workpath/config/config.yaml /work/config/config.yaml
 
 USER 1001
-EXPOSE 8090
+EXPOSE 8080
 
 # run the binary
 ENTRYPOINT ["./go-gin-server"]
