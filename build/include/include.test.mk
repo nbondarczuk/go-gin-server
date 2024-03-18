@@ -3,14 +3,14 @@
 #
 
 .PHONY: test
-test:
-	go test ./...
+test/unit:
+	go test -count=1 ./...
 
-test/verbose:
-	go test -v -cover ./...
+test/unit/verbose:
+	go test -count=1 -v -cover ./...
 
-test/cover:
-	go test -v -buildvcs -coverprofile=/tmp/coverage.out ./...
+test/unit/cover:
+	go test -count=1 -v -buildvcs -coverprofile=/tmp/coverage.out ./...
 	go tool cover -html=/tmp/coverage.out
 
 test/run:

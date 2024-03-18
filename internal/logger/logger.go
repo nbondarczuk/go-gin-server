@@ -1,14 +1,15 @@
 package logger
 
 import (
-	"github.com/sirupsen/logrus"
+	"log/slog"
+	"os"
 )
 
 const (
-	// LogLevelNormal is the default loge level.
-	LogLevelNormal = "NORMAL"
+	// LogLevelInfo is the default log level.
+	LogLevelInfo = "INFO"
 	// LogLevelDebug is used to provide detailed info on oprocessing level.
-	LogLevelDebug  = "DEBUG"
+	LogLevelDebug = "DEBUG"
 	// TraceLogLevel is used to provide detailed info on records level.
 
 	// LogFormatJSON is a format where all fields are JSON encoded.
@@ -17,19 +18,34 @@ const (
 	LogFormatText = "text"
 )
 
-// Log is a global object for accessing log stream with minimal overhead.
-var Log = logrus.New()
+var logger *slog.Logger
 
-// Init sets up new logger with normal screen output.
+// Init sets up new logger with a screen output.
 func Init(level, format string) error {
+	var l slog.Level
+
+	// Log level code check and mapping to slog internal values
+	switch level {
+	case LogLevelDebug:
+		l = slog.LevelDebug
+	case LogLevelInfo:
+		l = slog.LevelInfo
+	default:
+		return ErrInvalidLevel
+	}
+
+	// Log format code check and creation of specific handler.
 	switch format {
 	case LogFormatJSON:
-		Log.SetFormatter(&logrus.JSONFormatter{})
+		logger = slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	case LogFormatText:
-		Log.SetFormatter(&logrus.TextFormatter{})
+		logger = slog.New(slog.NewTextHandler(os.Stdout, nil))
 	default:
 		return ErrInvalidFormat
 	}
+
+	slog.SetDefault(logger)
+	slog.SetLogLoggerLevel(l)
 
 	return nil
 }

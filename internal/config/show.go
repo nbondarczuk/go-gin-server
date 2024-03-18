@@ -1,15 +1,15 @@
 package config
 
 import (
-	"go-gin-server/internal/logger"
+	"log/slog"
 )
 
 // Show prints all loaded options in the log.
 func Show() {
-	logger.Log.Info("Config options:")
-	logger.Log.Info("   application.name", ": ", ApplicationName())
-	logger.Log.Info("server.http.address", ": ", ServerHTTPAddress())
-	logger.Log.Info("   server.http.port", ": ", ServerHTTPPort())
-	logger.Log.Info("          log.level", ": ", LogLevel())
-	logger.Log.Info("         log.format", ": ", LogFormat())
+	slog.Info("Config options:")
+	slog.Info("   application.name", ": ", ApplicationName())
+	slog.Info("server.http.address", ": ", ServerHTTPAddress())
+	slog.Info("   server.http.port", ": ", ServerHTTPPort())
+	slog.Info("          log.level", ": ", LogLevel())
+	slog.Info("         log.format", ": ", LogFormat())
 }

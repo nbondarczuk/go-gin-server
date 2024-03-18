@@ -2,12 +2,14 @@ package server
 
 import (
 	"fmt"
+	"log/slog"
 
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"go-gin-server/internal/config"
 	"go-gin-server/internal/handler"
-	"go-gin-server/internal/logger"
+	"go-gin-server/internal/handler/task"
 	"go-gin-server/internal/middleware"
 )
 
@@ -17,17 +19,19 @@ type Server struct {
 }
 
 // New creates server with gin framework.
-func New() (*Server, error) {
-	// Dispatch info from config.
-	SetLogLevel()
+func New(version string) (*Server, error) {
+	handler.SetVersion(version)
+
+	gin.SetMode(gin.ReleaseMode)
 
 	s := &Server{
 		router: gin.New(),
 	}
 
-	// Apply required middleware.
-	s.router.Use(middleware.RequestLogger())
+	// Apply required middleware. The order matters as request log should
+	// go before response log.
 	s.router.Use(middleware.ResponseLogger())
+	s.router.Use(middleware.RequestLogger())
 
 	// Register defined handlers.
 	s.RegisterHandlers()
@@ -38,21 +42,20 @@ func New() (*Server, error) {
 // Run the gin server on routes.
 func (s *Server) Run() {
 	port := config.ServerHTTPPort()
-	logger.Log.Info("Starting HTTP server on port: ", port)
+	slog.Info("Starting HTTP server ", slog.Int("port", port))
 	s.router.Run(":" + fmt.Sprintf("%d", port))
 }
 
 // RegisterHandlers links handlers to API points.
 func (s *Server) RegisterHandlers() {
-	s.router.GET("/health", handler.Health)
-}
+	// System operations
+	s.router.GET("/health", handler.HealthHandler)
+	s.router.GET("/version", handler.VersionHandler)
+	s.router.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
-// SetLogLevel uses info from config to adjust web server parameters.
-func SetLogLevel() {
-	switch config.LogLevel() {
-	case config.LogLevelNormal:
-		gin.SetMode(gin.ReleaseMode)
-	case config.LogLevelDebug:
-		gin.SetMode(gin.DebugMode)
-	}
+	// CRUD task item operations
+	s.router.POST("/task", task.CreateHandler)
+	s.router.GET("/task/:id", task.ReadHandler)
+	s.router.PUT("/task/:id", task.UpdateHandler)
+	s.router.DELETE("/task/:id", task.DeleteHandler)
 }

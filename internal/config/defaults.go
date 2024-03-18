@@ -8,10 +8,10 @@ const (
 	DefaultApplicationName   = "go-gin-server"
 	DefaultServerHTTPAddress = "localhost"
 	DefaultServerHTTPPort    = 8080
-	DefaultLogLevel          = "DEBUG"
+	DefaultLogLevel          = "INFO"
 	DefaultLogFormat         = "text"
 
 	// Log levels
-	LogLevelNormal = "NORMAL"
-	LogLevelDebug  = "DEBUG"
+	LogLevelInfo  = "INFO"
+	LogLevelDebug = "DEBUG"
 )

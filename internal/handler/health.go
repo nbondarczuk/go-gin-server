@@ -1,12 +1,13 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-// Health provides simple feedback about living server.
-func Health(c *gin.Context) {
+// HealthHandler provides simple feedback about living server.
+func HealthHandler(c *gin.Context) {
 	r := map[string]interface{}{
 		"Status": "Ok",
 	}

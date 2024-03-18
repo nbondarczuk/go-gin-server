@@ -9,8 +9,8 @@ import (
 
 var (
 	options        *Options
-	configPath     string
-	configFileName = DefaultConfigFileName
+	ConfigPath     string
+	ConfigFileName = DefaultConfigFileName
 )
 
 // Options is a viper embedding.
@@ -35,22 +35,6 @@ func Init() error {
 	return nil
 }
 
-// InitForTest does the same as Init but it does not use config file.
-func InitForTest(input io.Reader) error {
-	options = &Options{viper.New()}
-	options.Viper.AutomaticEnv()
-
-	// Set defaults for all env application settings
-	initDefaults()
-
-	// Read config from provided reader.
-	if input != nil {
-		return loadConfig(input)
-	}
-
-	return nil
-}
-
 func initDefaults() {
 	options.Viper.SetDefault("application.name", DefaultApplicationName)
 	options.Viper.SetDefault("server.http.address", DefaultServerHTTPAddress)
@@ -65,25 +49,39 @@ func loadConfigFromFile() error {
 	v := options.Viper
 
 	// Testing may override this path.
-	configPath, err := os.Getwd()
-	if err != nil {
-		return errNoWorkingDir
+	if ConfigPath == "" {
+		ConfigPath, err := os.Getwd()
+		if err != nil {
+			return errNoWorkingDir
+		}
+		ConfigPath += "/config"
 	}
-	configPath += "/config"
 
-	v.AddConfigPath(configPath)
-	v.SetConfigName(configFileName)
+	v.AddConfigPath(ConfigPath)
+	v.SetConfigName(ConfigFileName)
 	v.SetConfigType("yaml")
 
-	err = v.ReadInConfig()
-	if err != nil {
+	if err := v.ReadInConfig(); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func loadConfig(input io.Reader) error {
-	options.Viper.SetConfigType("yaml")
-	return viper.ReadConfig(input)
+// InitForTest does the same as Init but it does not use config file.
+func InitForTest(input io.Reader) error {
+	options = &Options{viper.New()}
+	options.Viper.AutomaticEnv()
+
+	// Set defaults for all env application settings
+	initDefaults()
+
+	// Read config from provided reader.
+	if input != nil {
+		if err := viper.ReadConfig(input); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
