@@ -6,17 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestInitDefaults(t *testing.T) {
-	err := InitForTest(nil)
-	assert.NoError(t, err)
-	assert.Equal(t, DefaultApplicationName, options.GetString("application.name"))
-	assert.Equal(t, DefaultServerHTTPAddress, options.GetString("server.http.address"))
-	assert.Equal(t, DefaultServerHTTPPort, options.GetInt("server.http.port"))
-	assert.Equal(t, DefaultLogLevel, options.GetString("log.level"))
-	assert.Equal(t, DefaultLogFormat, options.GetString("log.format"))
-}
-
-func TestLoadConfigFromFile(t *testing.T) {
+func TestInit(t *testing.T) {
 	input := `application:
   name: go-gin-server2
 server:

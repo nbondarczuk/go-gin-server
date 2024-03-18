@@ -3,13 +3,14 @@ package config
 const (
 	// Hardcoded initial file name, mauy be changed in test
 	DefaultConfigFileName = "config.yaml"
+	DefaultConfigPathName = "config"
 
 	// Default option values
 	DefaultApplicationName   = "go-gin-server"
 	DefaultServerHTTPAddress = "localhost"
-	DefaultServerHTTPPort    = 8080
+	DefaultServerHTTPPort    = "8000"
 	DefaultLogLevel          = "INFO"
-	DefaultLogFormat         = "text"
+	DefaultLogFormat         = "json"
 
 	// Log levels
 	LogLevelInfo  = "INFO"

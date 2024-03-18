@@ -15,50 +15,43 @@ func TestGettersWithStringRV(t *testing.T) {
 		{
 			label:    "ApplicationName",
 			getter:   ApplicationName,
-			expected: DefaultApplicationName,
+			expected: "go-gin-server3",
 		},
 		{
 			label:    "ServerHTTPAddress",
 			getter:   ServerHTTPAddress,
-			expected: DefaultServerHTTPAddress,
+			expected: "localhost3",
 		},
 		{
 			label:    "LogLevel",
 			getter:   LogLevel,
-			expected: DefaultLogLevel,
+			expected: "DEBUG3",
 		},
 		{
 			label:    "LogFormat",
 			getter:   LogFormat,
-			expected: DefaultLogFormat,
+			expected: "text3",
 		},
-	}
-
-	err := InitForTest(nil)
-	assert.NoError(t, err)
-
-	for _, td := range tests {
-		t.Run(td.label, func(t *testing.T) {
-			result := td.getter()
-			assert.Equal(t, td.expected, result)
-		})
-	}
-}
-
-func TestGettersWithIntRV(t *testing.T) {
-	tests := []struct {
-		label    string
-		getter   func() int
-		expected int
-	}{
 		{
 			label:    "ServerHTTPPort",
 			getter:   ServerHTTPPort,
-			expected: DefaultServerHTTPPort,
+			expected: "80903",
 		},
 	}
+	input := `application:
+  name: go-gin-server3
+server:
+  http:
+    address: localhost3
+    port: 80903
+log:
+  level: DEBUG3
+  format: text3
+`
+	makeTestConfigFile(t, input)
+	defer cleanupTestConfigFile()
 
-	err := InitForTest(nil)
+	err := Init()
 	assert.NoError(t, err)
 
 	for _, td := range tests {

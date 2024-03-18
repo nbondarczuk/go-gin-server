@@ -3,7 +3,7 @@ application:
 server:
   http:
     address: localhost
-    port: 8090
+    port: 8080
 log:
   level: DEBUG
   format: text

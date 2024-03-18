@@ -1,5 +1,5 @@
 VERBOSE=
-PORT=8091
+PORT=8080
 HOST=localhost
 
 test:

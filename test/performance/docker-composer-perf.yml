@@ -6,7 +6,7 @@ services:
         context: ../..
         dockerfile: Dockerfile
     ports:
-      - 8090:8090
+      - 8080:8080
     external_links:
       - mongodb
       - redis

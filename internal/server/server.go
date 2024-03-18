@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"log/slog"
 
 	"github.com/gin-gonic/gin"
@@ -42,8 +41,8 @@ func New(version string) (*Server, error) {
 // Run the gin server on routes.
 func (s *Server) Run() {
 	port := config.ServerHTTPPort()
-	slog.Info("Starting HTTP server ", slog.Int("port", port))
-	s.router.Run(":" + fmt.Sprintf("%d", port))
+	slog.Info("Starting HTTP server", slog.String("port", port))
+	s.router.Run(":" + port)
 }
 
 // RegisterHandlers links handlers to API points.

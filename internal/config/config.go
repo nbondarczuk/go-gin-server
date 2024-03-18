@@ -1,15 +1,12 @@
 package config
 
 import (
-	"io"
-	"os"
-
 	"github.com/spf13/viper"
 )
 
 var (
 	options        *Options
-	ConfigPath     string
+	ConfigPath     = DefaultConfigPathName
 	ConfigFileName = DefaultConfigFileName
 )
 
@@ -22,10 +19,12 @@ type Options struct {
 func Init() error {
 	// load config from env variables
 	options = &Options{viper.New()}
-	options.Viper.AutomaticEnv()
 
 	// Set defaults for all env application settings
 	initDefaults()
+
+	// Bind viper names with env variables.
+	bindEnvVars()
 
 	// Use config file to override dafaults.
 	if err := loadConfigFromFile(); err != nil {
@@ -36,7 +35,10 @@ func Init() error {
 }
 
 func initDefaults() {
+	// application settings
 	options.Viper.SetDefault("application.name", DefaultApplicationName)
+
+	// server settings
 	options.Viper.SetDefault("server.http.address", DefaultServerHTTPAddress)
 	options.Viper.SetDefault("server.http.port", DefaultServerHTTPPort)
 
@@ -45,42 +47,20 @@ func initDefaults() {
 	options.Viper.SetDefault("log.format", DefaultLogFormat)
 }
 
-func loadConfigFromFile() error {
-	v := options.Viper
-
-	// Testing may override this path.
-	if ConfigPath == "" {
-		ConfigPath, err := os.Getwd()
-		if err != nil {
-			return errNoWorkingDir
-		}
-		ConfigPath += "/config"
-	}
-
-	v.AddConfigPath(ConfigPath)
-	v.SetConfigName(ConfigFileName)
-	v.SetConfigType("yaml")
-
-	if err := v.ReadInConfig(); err != nil {
-		return err
-	}
-
-	return nil
+func bindEnvVars() {
+	options.Viper.BindEnv("application.name", "APPLICATION_NAME")
+	options.Viper.BindEnv("server.http.address", "SERVER_HTTP_ADDRESS")
+	options.Viper.BindEnv("server.http.port", "SERVER_HTTP_PORT")
+	options.Viper.BindEnv("log.level", "LOG_LEVEL")
+	options.Viper.BindEnv("log.format", "LOG_FORMAT")
 }
 
-// InitForTest does the same as Init but it does not use config file.
-func InitForTest(input io.Reader) error {
-	options = &Options{viper.New()}
-	options.Viper.AutomaticEnv()
-
-	// Set defaults for all env application settings
-	initDefaults()
-
-	// Read config from provided reader.
-	if input != nil {
-		if err := viper.ReadConfig(input); err != nil {
-			return err
-		}
+func loadConfigFromFile() error {
+	options.Viper.AddConfigPath(ConfigPath)
+	options.Viper.SetConfigName(ConfigFileName)
+	options.Viper.SetConfigType("yaml")
+	if err := options.Viper.ReadInConfig(); err != nil {
+		return err
 	}
 
 	return nil
