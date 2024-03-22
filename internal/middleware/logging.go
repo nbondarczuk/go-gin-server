@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"go-gin-server/internal/log"
+	"go-gin-server/internal/logging"
 )
 
 // RequestLogger logs incoming request.
@@ -22,7 +22,7 @@ func RequestLogger() gin.HandlerFunc {
 			c.Request.Proto,
 			latency,
 		)
-		log.Logger.Info("Received", slog.String("request", line))
+		logging.Logger.Info("Received", slog.String("request", line))
 	}
 }
 
@@ -36,6 +36,6 @@ func ResponseLogger() gin.HandlerFunc {
 			c.Request.Method,
 			c.Request.RequestURI,
 		)
-		log.Logger.Info("Produced", slog.String("response", line))
+		logging.Logger.Info("Produced", slog.String("response", line))
 	}
 }

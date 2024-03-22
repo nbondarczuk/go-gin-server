@@ -9,7 +9,7 @@ import (
 	"go-gin-server/internal/config"
 	"go-gin-server/internal/handler"
 	"go-gin-server/internal/handler/task"
-	"go-gin-server/internal/log"
+	"go-gin-server/internal/logging"
 	"go-gin-server/internal/middleware"
 )
 
@@ -42,7 +42,7 @@ func New(version string) (*Server, error) {
 // Run the gin server on routes.
 func (s *Server) Run() {
 	port := config.ServerHTTPPort()
-	log.Logger.Info("Starting HTTP server", slog.String("port", port))
+	logging.Logger.Info("Starting HTTP server", slog.String("port", port))
 	s.router.Run(":" + port)
 }
 

@@ -1,4 +1,4 @@
-package log
+package logging
 
 import (
 	"log/slog"
@@ -34,12 +34,16 @@ func Init(version, level, format string) error {
 		return ErrInvalidLevel
 	}
 
+	attrs := &slog.HandlerOptions{
+		ReplaceAttr: replaceAttr,
+	}
+
 	// Log format code check and creation of specific handler.
 	switch format {
 	case LogFormatJSON:
-		Logger = slog.New(slog.NewJSONHandler(os.Stdout, nil))
+		Logger = slog.New(slog.NewJSONHandler(os.Stdout, attrs))
 	case LogFormatText:
-		Logger = slog.New(slog.NewTextHandler(os.Stdout, nil))
+		Logger = slog.New(slog.NewTextHandler(os.Stdout, attrs))
 	default:
 		return ErrInvalidFormat
 	}
