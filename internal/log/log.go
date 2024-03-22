@@ -1,4 +1,4 @@
-package logger
+package log
 
 import (
 	"log/slog"
@@ -18,10 +18,10 @@ const (
 	LogFormatText = "text"
 )
 
-var logger *slog.Logger
+var Logger *slog.Logger
 
 // Init sets up new logger with a screen output.
-func Init(level, format string) error {
+func Init(version, level, format string) error {
 	var l slog.Level
 
 	// Log level code check and mapping to slog internal values
@@ -37,14 +37,21 @@ func Init(level, format string) error {
 	// Log format code check and creation of specific handler.
 	switch format {
 	case LogFormatJSON:
-		logger = slog.New(slog.NewJSONHandler(os.Stdout, nil))
+		Logger = slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	case LogFormatText:
-		logger = slog.New(slog.NewTextHandler(os.Stdout, nil))
+		Logger = slog.New(slog.NewTextHandler(os.Stdout, nil))
 	default:
 		return ErrInvalidFormat
 	}
 
-	slog.SetDefault(logger)
+	Logger = Logger.With(
+		slog.Group("process",
+			slog.Int("pid", os.Getpid()),
+			slog.String("version", version),
+		),
+	)
+
+	slog.SetDefault(Logger)
 	slog.SetLogLoggerLevel(l)
 
 	return nil
