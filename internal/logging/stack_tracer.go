@@ -7,6 +7,11 @@ import (
 	"github.com/mdobak/go-xerrors"
 )
 
+//
+// Example of an stack tracer for errors,
+// copied https://betterstack.com/community/guides/logging/logging-in-go/
+//
+
 type stackFrame struct {
 	Func   string `json:"func"`
 	Source string `json:"source"`
