@@ -18,7 +18,7 @@ log:
   format: text2
 `
 	makeTestConfigFile(t, input)
-	defer cleanupTestConfigFile()
+	defer cleanupTestConfigFile(t)
 
 	err := Init()
 	assert.NoError(t, err)

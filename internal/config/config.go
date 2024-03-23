@@ -5,9 +5,9 @@ import (
 )
 
 var (
-	options        *Options
-	ConfigPath     = DefaultConfigPathName
-	ConfigFileName = DefaultConfigFileName
+	options  *Options
+	Path     = DefaultConfigPathName
+	FileName = DefaultConfigFileName
 )
 
 // Options is a viper embedding.
@@ -24,10 +24,13 @@ func Init() error {
 	initDefaults()
 
 	// Bind viper names with env variables.
-	bindEnvVars()
+	if err := bindEnvVars(); err != nil {
+		return err
+	}
 
-	// Use config file to override dafaults.
+	// Use config file to override defaults.
 	if err := loadConfigFromFile(); err != nil {
+
 		return err
 	}
 
@@ -47,17 +50,34 @@ func initDefaults() {
 	options.Viper.SetDefault("log.format", DefaultLogFormat)
 }
 
-func bindEnvVars() {
-	options.Viper.BindEnv("application.name", "APPLICATION_NAME")
-	options.Viper.BindEnv("server.http.address", "SERVER_HTTP_ADDRESS")
-	options.Viper.BindEnv("server.http.port", "SERVER_HTTP_PORT")
-	options.Viper.BindEnv("log.level", "LOG_LEVEL")
-	options.Viper.BindEnv("log.format", "LOG_FORMAT")
+func bindEnvVars() error {
+	var err error
+	err = options.Viper.BindEnv("application.name", "APPLICATION_NAME")
+	if err != nil {
+		return err
+	}
+	err = options.Viper.BindEnv("server.http.address", "SERVER_HTTP_ADDRESS")
+	if err != nil {
+		return err
+	}
+	err = options.Viper.BindEnv("server.http.port", "SERVER_HTTP_PORT")
+	if err != nil {
+		return err
+	}
+	err = options.Viper.BindEnv("log.level", "LOG_LEVEL")
+	if err != nil {
+		return err
+	}
+	err = options.Viper.BindEnv("log.format", "LOG_FORMAT")
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func loadConfigFromFile() error {
-	options.Viper.AddConfigPath(ConfigPath)
-	options.Viper.SetConfigName(ConfigFileName)
+	options.Viper.AddConfigPath(Path)
+	options.Viper.SetConfigName(FileName)
 	options.Viper.SetConfigType("yaml")
 	if err := options.Viper.ReadInConfig(); err != nil {
 		return err

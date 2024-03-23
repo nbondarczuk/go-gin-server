@@ -21,7 +21,7 @@ func makeTestConfigFile(t *testing.T, input string) {
 		t.Fatal(err)
 	}
 	defer os.Chdir(pwd)
-	ConfigPath = dir
+	Path = dir
 	t.Logf("Config dir is: %s", dir)
 	f, err := ioutil.TempFile(dir, "config.yaml")
 	if err != nil {
@@ -31,17 +31,20 @@ func makeTestConfigFile(t *testing.T, input string) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	ConfigFileName = s.Name()
-	t.Logf("Config file name is: %s", ConfigFileName)
+	FileName = s.Name()
+	t.Logf("Config file name is: %s", FileName)
 
 	n, err := f.Write([]byte(input))
 	if err != nil || n != len(input) {
 		t.Fatal(err)
 	}
 
-	t.Logf("Produced test file: %s/%s, size: %d", ConfigPath, ConfigFileName, n)
+	t.Logf("Produced test file: %s/%s, size: %d", Path, FileName, n)
 }
 
-func cleanupTestConfigFile() {
-	os.RemoveAll(ConfigPath)
+func cleanupTestConfigFile(t *testing.T) {
+	err := os.RemoveAll(Path)
+	if err != nil {
+		t.Fatal(err)
+	}
 }

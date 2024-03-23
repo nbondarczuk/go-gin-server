@@ -38,7 +38,7 @@ func main() {
 	showStartupInfo()
 
 	// Start web service API.
-	server, err := server.New(version)
+	s, err := server.New(version)
 	if err != nil {
 		slog.Error("Error creating server, exiting",
 			slog.String("err",
@@ -46,5 +46,12 @@ func main() {
 		os.Exit(3)
 	}
 
-	server.Run()
+	// Run the server listener.
+	err = s.Run()
+	if err != nil {
+		slog.Error("Error running server, exiting",
+			slog.String("err",
+				err.Error()))
+		os.Exit(4)
+	}
 }

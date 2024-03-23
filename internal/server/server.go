@@ -40,10 +40,10 @@ func New(version string) (*Server, error) {
 }
 
 // Run the gin server on routes.
-func (s *Server) Run() {
+func (s *Server) Run() error {
 	port := config.ServerHTTPPort()
 	logging.Logger.Info("Starting HTTP server", slog.String("port", port))
-	s.router.Run(":" + port)
+	return s.router.Run(":" + port)
 }
 
 // RegisterHandlers links handlers to API points.
