@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: go-gin-server
+  name: go-gin-server
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      service: server
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        service: go-gin-server
+    spec:
+      containers:
+          image: nbondarczuk/go-gin-server
+          name: go-gin-server
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: go-gin-server
+  name: go-gin-server
+  namespace: default
+spec:
+  type: NodePort
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
+      nodePort: 30001
+  selector:
+    service: go-gin-server
+status:
+  loadBalancer: {}
