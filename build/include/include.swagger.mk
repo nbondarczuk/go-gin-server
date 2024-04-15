@@ -14,3 +14,12 @@ swagger/generate:
 swagger/serve:
 	@$(SWAGGER_TOOL_PATH)/swagger.sh serve
 
+swagger/help:
+	@echo
+	@echo 'Swagger utility targets'
+	@echo
+	@echo 'Usage:'
+	@echo '    make swagger/pull'
+	@echo '    make swagger/version'
+	@echo '    make swagger/generate'
+	@echo '    make swagger/serve'

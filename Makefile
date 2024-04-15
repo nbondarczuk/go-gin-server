@@ -27,7 +27,7 @@ help:
 	@echo '    make build                 build applicatetion locally'
 	@echo '    make run                   Run application locally'
 	@echo '    make clean                 clean all'
-	@make --no-print-directory go/help docker/help test/help
+	@make --no-print-directory go/help docker/help test/help swagger/help minikube/help deploy/help
 
 .PHONY: $(TARGET) run clean help
 
