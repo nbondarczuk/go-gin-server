@@ -45,7 +45,6 @@ is done here.
 This is more complex case of docker compose as a testing client like ab starts
 to run the server API access points.
 
-### Kubernetes testing
+### Kubernetes deployment
 
-Even more advanced test where the server is installed in the cluster and performance
-test is done as above.
+The k8s deployment is done with docker/deploy target. It creates 3 node service.
