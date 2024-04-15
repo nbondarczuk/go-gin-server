@@ -9,7 +9,7 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      service: server
+      service: go-gin-server
   strategy: {}
   template:
     metadata:
@@ -17,9 +17,9 @@ spec:
         service: go-gin-server
     spec:
       containers:
-          image: nbondarczuk/go-gin-server
-          name: go-gin-server
-          imagePullPolicy: Always
+        - name: go-gin-server
+          image: go-gin-server:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
               hostPort: 8080
