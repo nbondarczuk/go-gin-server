@@ -6,11 +6,11 @@ load:
 start:
 	kubectl apply -f $(SRC)
 
-stop:
+delete:
 	kubectl delete -f $(SRC)
 
 show:
-	kubectl get svc,pods -o wide
+	kubectl get ingress,svc,pods -o wide
 
 tunnel:
 	minikube tunnel
