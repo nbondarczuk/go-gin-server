@@ -19,7 +19,7 @@ spec:
       containers:
         - name: go-gin-server
           image: go-gin-server:latest
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
               hostPort: 8080
@@ -54,14 +54,9 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    - name: "8080"
-      port: 8080
-      targetPort: 8080
-      nodePort: 30001
+    - port: 8080
   selector:
     service: go-gin-server
-status:
-  loadBalancer: {}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

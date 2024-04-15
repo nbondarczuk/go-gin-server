@@ -2,8 +2,8 @@
 # Targets for handling deployment to minikube testing environment
 #
 
-deploy/start:
-	make -C build/deploy start
+deploy/create:
+	make -C build/deploy create
 
 deploy/delete:
 	make -C build/deploy delete
@@ -22,7 +22,7 @@ deploy/help:
 	@echo 'Deployment run targets'
 	@echo
 	@echo 'Usage:'
-	@echo '    make deploy/start   Start deployment'
+	@echo '    make deploy/create  Create deployment'
 	@echo '    make deploy/delete  Delete deployment'
 	@echo '    make deploy/show    Show deployment'
 	@echo '    make deploy/tunnel  Make tunnel to access the cluster'
