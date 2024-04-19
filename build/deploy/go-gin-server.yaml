@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: go-gin-server
-          image: go-gin-server:latest
+          image: nbondarczuk/go-gin-server:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
