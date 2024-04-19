@@ -2,11 +2,14 @@
 # Docker utility targets
 #
 
+$(info !docker make: The docker image version is: $(VERSION))
+
 ifneq (${GODEBUG},)
-	BUILD_ARGS=--build-arg VERSION=${VERSION} \
-		--build-arg GODEBUG=${GODEBUG}
+    $(info !docker make: Building debug docker image with flags: ${GODEBUG})
+    BUILD_ARGS=--build-arg VERSION=${VERSION} \
+        --build-arg GODEBUG=${GODEBUG}
 else
-	BUILD_ARGS=--build-arg VERSION=${VERSION}
+    BUILD_ARGS=--build-arg VERSION=${VERSION}
 endif
 
 PROJECT_DIR=build/compose

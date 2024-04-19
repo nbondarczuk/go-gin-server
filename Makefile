@@ -11,7 +11,7 @@ endif
 LDFLAGS=-ldflags "-X main.version=${VERSION}"
 
 # Trigger usage of CGDEBUG env var in docker/image target
-#GODEBUG=gctrace=1
+GODEBUG=gctrace=1
 
 $(TARGET): $(SRC)
 	go build $(LDFLAGS) -o ./bin/$@ ./cmd/$(TARGET)/main.go
