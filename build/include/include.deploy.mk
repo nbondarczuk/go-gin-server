@@ -2,6 +2,9 @@
 # Targets for handling deployment to minikube testing environment
 #
 
+deploy/load:
+	make -C build/deploy load
+
 deploy/create:
 	make -C build/deploy create
 
