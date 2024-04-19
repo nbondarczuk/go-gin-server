@@ -2,10 +2,7 @@
 # Docker utility targets
 #
 
-$(info !docker make: The docker image version is: $(VERSION))
-
 ifneq (${GODEBUG},)
-    $(info !docker make: Building debug docker image with flags: ${GODEBUG})
     BUILD_ARGS=--build-arg VERSION=${VERSION} \
         --build-arg GODEBUG=${GODEBUG}
 else
@@ -46,15 +43,6 @@ docker/compose/logs:
 docker/compose/ps:
 	docker-compose ${PROJECT_OPTIONS} ps -a
 
-docker/deploy:
-	make -C build/deploy start
-
-docker/deploy/stop:
-	make -C build/deploy stop
-
-docker/deploy/show:
-	make -C build/deploy show
-
 docker/help:
 	@echo
 	@echo 'Docker utility targets'
@@ -67,6 +55,3 @@ docker/help:
 	@echo '    make docker/compose/down   stop docker compose'
 	@echo '    make docker/compose/logs   show logs'
 	@echo '    make docker/compose/ps     show processes'
-	@echo '    make docker/deploy         deploy to k8s'
-	@echo '    make docker/deploy/stop    remove deployment of k8s'
-	@echo '    make docker/deploy/show    show deployment of k8s'

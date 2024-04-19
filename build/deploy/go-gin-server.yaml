@@ -6,7 +6,7 @@ metadata:
   name: go-gin-server
   namespace: default
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       service: go-gin-server
@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: go-gin-server
-          image: nbondarczuk/go-gin-server:latest
+          image: docker.io/nbondarczuk/go-gin-server:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -52,7 +52,7 @@ metadata:
   name: go-gin-server
   namespace: default
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
     - port: 8080
   selector:
