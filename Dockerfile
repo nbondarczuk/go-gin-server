@@ -31,5 +31,7 @@ COPY --from=builder /workpath/config/config.yaml /work/config/config.yaml
 USER 1001
 EXPOSE 8080
 
+ARG GODEBUG
+
 # run the binary
 ENTRYPOINT ["./go-gin-server"]

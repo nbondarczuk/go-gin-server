@@ -2,8 +2,15 @@
 # Docker utility targets
 #
 
-BUILD_ARGS=--build-arg VERSION=${VERSION}
+ifneq (${GODEBUG},)
+	BUILD_ARGS=--build-arg VERSION=${VERSION} \
+		--build-arg GODEBUG=${GODEBUG}
+else
+	BUILD_ARGS=--build-arg VERSION=${VERSION}
+endif
+
 PROJECT_DIR=build/compose
+
 PROJECT_OPTIONS=--project-directory=${PROJECT_DIR} \
 	--file ${PROJECT_DIR}/docker-compose.yml \
 	--file ${PROJECT_DIR}/docker-compose-prometheus.yml \
