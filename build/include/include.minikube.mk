@@ -2,13 +2,22 @@
 # Targets for handling minikube testing environment
 #
 
-NODES=1
+#
+# Minikube parameters
+#
+NODES=3
 CNI=calico
-IMAGE=$(REPOSITORY)/$(TARGET):$(VERSION)
+MEMORY=3000
+CPUS=4
+CONTAINER_RUNTIME=docker
+
+#
+# Deployment image naming conveention: it must be in sych with deployment yaml file.
+#
 LATEST_IMAGE=$(REPOSITORY)/$(TARGET):latest
 
 minikube/start:
-	minikube start -n $(NODES) --cni=$(CNI)
+	minikube start -n $(NODES) --cni=$(CNI) --memory $(MEMORY) --cpus $(CPUS) container-runtime=$(CONTAINER_RUNTIME)
 
 minikube/delete:
 	minikube delete
@@ -19,7 +28,7 @@ minikube/status:
 minikube/deploy/build:
 	minikube image build -t $(LATEST_IMAGE) .
 
-minikube/deploy/create:
+minikube/deploy:
 	make -C build/deploy create
 
 minikube/deploy/delete:
@@ -29,7 +38,7 @@ minikube/deploy/show:
 	make -C build/deploy show
 
 minikube/deploy/tunnel:
-	make -C build/deploy tunnel
+	minikube tunnel
 
 minikube/deploy/test:
 	make -C build/deploy test
@@ -45,9 +54,10 @@ minikube/help:
 	@echo '    make minikube/start          Start test cluster'
 	@echo '    make minikube/delete         Delete test cluster'
 	@echo '    make minikube/status         Show test cluster status'
+	@echo '    make minikube/deploy/build   Build deployment image(s)'
 	@echo '    make minikube/deploy         Create deployment'
 	@echo '    make minikube/deploy/delete  Delete deployment'
-	@echo '    make minikube/deploy/show    Show deployment'
-	@echo '    make minikube/deploy/tunnel  Make tunnel to access the cluster'
+	@echo '    make minikube/deploy/show    Show deployment objects'
+	@echo '    make minikube/deploy/tunnel  Make tunnel to access the service'
 	@echo '    make minikube/deploy/test    Test deployment pinging it health check'
 	@echo '    make minikube/deploy/clean   Clean deployment images'

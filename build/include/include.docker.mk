@@ -2,24 +2,28 @@
 # Docker utility targets
 #
 
+#
+# Deployment naming conventions
+#
+IMAGE=$(REPOSITORY)/$(TARGET):$(VERSION)
+LATEST_IMAGE=$(REPOSITORY)/$(TARGET):latest
+
+#
+# Project options for docker compose
+#
 ifneq (${GODEBUG},)
     BUILD_ARGS=--build-arg VERSION=${VERSION} \
         --build-arg GODEBUG=${GODEBUG}
 else
     BUILD_ARGS=--build-arg VERSION=${VERSION}
 endif
-
 PROJECT_DIR=build/compose
-
 PROJECT_OPTIONS=--project-directory=${PROJECT_DIR} \
 	--file ${PROJECT_DIR}/docker-compose.yml \
 	--file ${PROJECT_DIR}/docker-compose-prometheus.yml \
 	--file ${PROJECT_DIR}/docker-compose-grafana.yml \
 	--file ${PROJECT_DIR}/docker-compose-mongodb.yml \
 	--file ${PROJECT_DIR}/docker-compose-redis.yml
-
-IMAGE=$(REPOSITORY)/$(TARGET):$(VERSION)
-LATEST_IMAGE=$(REPOSITORY)/$(TARGET):latest
 
 docker/image:
 	DOCKER_BUILDKIT=1 docker build -f Dockerfile -t $(IMAGE) . $(BUILD_ARGS)

@@ -47,4 +47,4 @@ to run the server API access points.
 
 ### Kubernetes deployment
 
-The k8s deployment is done with docker/deploy target. It creates 3 node service.
+The k8s deployment is done with minikube/* target. It creates 3 node service using minikube.
