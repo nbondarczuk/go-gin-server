@@ -4,6 +4,7 @@
 #
 
 SRC=go-gin-server.yaml
+IP=127.0.0.1
 
 create:
 	kubectl apply -f $(SRC)
@@ -20,4 +21,4 @@ test-service:
 	curl http://127.0.0.1:8080/health -vvv
 
 test-ingress:
-	curl --resolve "go-gin-server.info:80:$(minikube ip)" -i http://go-gin-server.info/health -vvv
+	curl --resolve "go-gin-server.info:80:${IP}" -i http://go-gin-server.info/health -vvv
