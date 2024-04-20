@@ -47,6 +47,18 @@ docker/compose/logs:
 docker/compose/ps:
 	docker-compose ${PROJECT_OPTIONS} ps -a
 
+docker/deploy:
+	make -C build/deploy create
+
+docker/deploy/delete:
+	make -C build/deploy delete
+
+docker/deploy/show:
+	make -C build/deploy show
+
+docker/deploy/test:
+	make -C build/deploy test
+
 docker/help:
 	@echo
 	@echo 'Docker utility targets'
@@ -59,3 +71,7 @@ docker/help:
 	@echo '    make docker/compose/down   stop docker compose'
 	@echo '    make docker/compose/logs   show logs'
 	@echo '    make docker/compose/ps     show processes'
+	@echo '    make docker/deploy         create deployment'
+	@echo '    make docker/deploy/delete  delete deployment'
+	@echo '    make docker/deploy/show    show deployment'
+	@echo '    make docker/deploy/test    test deployment'
