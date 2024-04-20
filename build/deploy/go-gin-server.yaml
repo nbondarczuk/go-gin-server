@@ -20,6 +20,13 @@ spec:
         - name: go-gin-server
           image: docker.io/nbondarczuk/go-gin-server:latest
           imagePullPolicy: Never
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "20Mi"
+            limits:
+              cpu: "500m"
+              memory: "100Mi"
           ports:
             - containerPort: 8080
               hostPort: 8080
