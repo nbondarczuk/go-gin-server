@@ -14,5 +14,10 @@ delete:
 show:
 	kubectl get ingress,svc,pods -o wide
 
-test:
-	curl http://127.0.0.1:8080/health
+test: test-ingress test-service
+
+test-service:
+	curl http://127.0.0.1:8080/health -vvv
+
+test-ingress:
+	curl --resolve "go-gin-server.info:80:$(minikube ip)" -i http://go-gin-server.info/health -vvv

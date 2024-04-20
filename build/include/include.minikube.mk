@@ -5,10 +5,10 @@
 #
 # Minikube parameters
 #
-NODES=3
+NODES=1
 CNI=calico
-MEMORY=3000
-CPUS=4
+MEMORY=2000
+CPUS=2
 CONTAINER_RUNTIME=docker
 
 #
@@ -18,6 +18,12 @@ LATEST_IMAGE=$(REPOSITORY)/$(TARGET):latest
 
 minikube/start:
 	minikube start -n $(NODES) --cni=$(CNI) --memory $(MEMORY) --cpus $(CPUS) container-runtime=$(CONTAINER_RUNTIME)
+	minikube addons enable ingress
+	minikube addons enable ingress-dns
+	minikube addons enable registry
+	eval $(minikube docker-env)
+	docker login
+	make minikube/deploy/build
 
 minikube/delete:
 	minikube delete
