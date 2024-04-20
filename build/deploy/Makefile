@@ -4,7 +4,9 @@
 #
 
 SRC=go-gin-server.yaml
+PORT=30000
 IP=127.0.0.1
+DSN=go-gin-server.info
 
 create:
 	kubectl apply -f $(SRC)
@@ -15,10 +17,12 @@ delete:
 show:
 	kubectl get ingress,svc,pods -o wide
 
-test: test-ingress test-service
+test: test-service test-ingress
 
 test-service:
-	curl http://127.0.0.1:8080/health -vvv
+	curl http://${IP}:${PORT}/health -vvv
+	@echo
 
 test-ingress:
-	curl --resolve "go-gin-server.info:80:${IP}" -i http://go-gin-server.info/health -vvv
+	curl --resolve "${DSN}:80:${IP}" -i http://${DSN}/health -vvv
+	@echo
