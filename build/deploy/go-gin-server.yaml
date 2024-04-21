@@ -73,10 +73,10 @@ kind: Ingress
 metadata:
   name: go-gin-server-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
     kubernetes.io/ingress.class: nginx
 spec:
-  ingressClassName: ngix
+  ingressClassName: nginx
   rules:
     - host: go-gin-server.info
       http:
