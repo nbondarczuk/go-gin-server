@@ -8,7 +8,7 @@ import (
 
 	"go-gin-server/internal/config"
 	"go-gin-server/internal/handler"
-	"go-gin-server/internal/handler/task"
+	"go-gin-server/internal/handler/tag"
 	"go-gin-server/internal/logging"
 	"go-gin-server/internal/middleware"
 )
@@ -53,9 +53,9 @@ func (s *Server) RegisterHandlers() {
 	s.router.GET("/version", handler.VersionHandler)
 	s.router.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
-	// CRUD task item operations
-	s.router.POST("/task", task.CreateHandler)
-	s.router.GET("/task/:id", task.ReadHandler)
-	s.router.PUT("/task/:id", task.UpdateHandler)
-	s.router.DELETE("/task/:id", task.DeleteHandler)
+	// CRUD tag item operations
+	s.router.POST("/tag", tag.CreateHandler)
+	s.router.GET("/tag/:id", tag.ReadHandler)
+	s.router.PUT("/tag/:id", tag.UpdateHandler)
+	s.router.DELETE("/tag/:id", tag.DeleteHandler)
 }
