@@ -21,3 +21,11 @@ func LogLevel() string {
 func LogFormat() string {
 	return string(options.Viper.Get("log.format").(string))
 }
+
+func BackendDBName() string {
+	return string(options.Viper.Get("backend.dbname").(string))
+}
+
+func BackendURL() string {
+	return string(options.Viper.Get("backend.url").(string))
+}

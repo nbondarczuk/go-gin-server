@@ -48,6 +48,10 @@ func initDefaults() {
 	// logging settings
 	options.Viper.SetDefault("log.level", DefaultLogLevel)
 	options.Viper.SetDefault("log.format", DefaultLogFormat)
+
+	// backend
+	options.Viper.SetDefault("backend.dbname", DefaultBackendDBName)
+	options.Viper.SetDefault("backend.url", DefaultBackendURL)
 }
 
 func bindEnvVars() error {
@@ -69,6 +73,14 @@ func bindEnvVars() error {
 		return err
 	}
 	err = options.Viper.BindEnv("log.format", "LOG_FORMAT")
+	if err != nil {
+		return err
+	}
+	err = options.Viper.BindEnv("backend.dbname", "BACKEND_DBNAME")
+	if err != nil {
+		return err
+	}
+	err = options.Viper.BindEnv("backend.url", "BACKEND_URL")
 	if err != nil {
 		return err
 	}

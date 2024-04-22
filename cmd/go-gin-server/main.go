@@ -17,6 +17,8 @@ func showStartupInfo() {
 	logging.Logger.Info("Config", slog.String("server.http.port", config.ServerHTTPPort()))
 	logging.Logger.Info("Config", slog.String("log.level", config.LogLevel()))
 	logging.Logger.Info("Config", slog.String("log.format", config.LogFormat()))
+	logging.Logger.Info("Config", slog.String("backend.dbname", config.BackendDBName()))
+	logging.Logger.Info("Config", slog.String("backend.url", config.BackendURL()))
 }
 
 func main() {
