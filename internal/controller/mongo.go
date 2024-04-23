@@ -35,10 +35,10 @@ func WithMongo() (*MongoBackend, error) {
 	opts := options.Client().ApplyURI(BackendURL)
 	client, err := mongo.Connect(context.TODO(), opts)
 	if err != nil {
-		return nil, ErrBackendClientConnect
+		return nil, err
 	}
 	if err := client.Ping(context.TODO(), readpref.Primary()); err != nil {
-		return nil, ErrBackendClientPing
+		return nil, err
 	}
 	backend := &MongoBackend{
 		Client: client,
