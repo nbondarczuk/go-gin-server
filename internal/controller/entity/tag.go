@@ -24,20 +24,20 @@ type Tag struct {
 
 // TagController is a container for resource accerss action state.
 type TagController struct {
-	backend    *controller.MongoBackend
+	repository *controller.MongoRepository
 	ctx        context.Context
 	collection *mongo.Collection
 }
 
 // NewTagController handles resource access action in its own context.
 func NewTagController() (*TagController, error) {
-	backend, err := controller.WithMongo()
+	repository, err := controller.WithMongo()
 	if err != nil {
 		return nil, err
 	}
-	collection := backend.Client.Database(backend.DBName).Collection(TagCollectionName)
+	collection := repository.Client.Database(repository.DBName).Collection(TagCollectionName)
 	tc := TagController{
-		backend:    backend,
+		repository: repository,
 		ctx:        context.Background(),
 		collection: collection,
 	}

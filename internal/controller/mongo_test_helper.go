@@ -24,7 +24,7 @@ func SetupTestDatabase() *TestDatabase {
 		log.Fatal("failed to setup test", err)
 	}
 
-	log.Println("Mongo DB available: ", dbInstance, dbAddr)
+	log.Println("Test Mongo DB address: ", dbAddr)
 
 	return &TestDatabase{
 		container:  container,
