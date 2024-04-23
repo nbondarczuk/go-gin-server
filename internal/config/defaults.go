@@ -18,5 +18,5 @@ const (
 
 	// backend
 	DefaultBackendDBName = "mongo"
-	DefaultBackendURL    = "mongodb://localhost:27017/?connect=direct"
+	DefaultBackendURL    = "mongodb://localhost:27017"
 )

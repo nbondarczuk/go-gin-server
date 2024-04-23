@@ -12,7 +12,7 @@ import (
 func CreateHandler(c *gin.Context) {
 	var tag entity.Tag
 	// Check input ie. new object attributes from request body.
-	if err := ShouldBindJSON(&tag); err != nil {
+	if err := c.ShouldBindJSON(&tag); err != nil {
 		// Handle error in request body.
 		c.JSON(http.StatusBadRequest,
 			gin.H{"error": err.Error()})
@@ -35,7 +35,7 @@ func CreateHandler(c *gin.Context) {
 	}
 	r := map[string]interface{}{
 		"Status": "Ok",
-		"object": rval,
+		"Object": rval,
 	}
 	c.JSON(http.StatusOK, r)
 	return

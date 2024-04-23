@@ -3,6 +3,6 @@ package controller
 import "errors"
 
 var (
-	ErrClientConnect = errors.New("client connection error")
-	ErrClientPing    = errors.New("client ping error")
+	ErrBackendClientConnect = errors.New("controller backend client connection error")
+	ErrBackendClientPing    = errors.New("controller backend client ping error")
 )

@@ -9,4 +9,4 @@ log:
   format: text
 backend:
   dbname: "mongo"
-  uri: "mongodb://localhost:27017/?connect=direct"
+  uri: "mongodb://localhost:27017"

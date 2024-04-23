@@ -31,10 +31,11 @@ func NewTagController() (*TagController, error) {
 	if err != nil {
 		return nil, err
 	}
-	collecction := backend.client.Database(backend.DBName).Collection(TagCollectionName)
+	collection := backend.Client.Database(backend.DBName).Collection(TagCollectionName)
 	tc := TagController{
-		backend: backend,
-		ctx:     context.Background(),
+		backend:    backend,
+		ctx:        context.Background(),
+		collection: collection,
 	}
 	return &tc, nil
 }
@@ -42,7 +43,7 @@ func NewTagController() (*TagController, error) {
 // Create an object with new oid allocated.
 func (tc *TagController) Create(tag *Tag) (*Tag, error) {
 	tag.oid = primitive.NewObjectID()
-	tag, err := tc.collection.InsertOne(tc.ctx, *tag)
+	_, err := tc.collection.InsertOne(tc.ctx, tag)
 	if err != nil {
 		return nil, err
 	}

@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	MongoDBName string
-	MongoURL    string
+	BackendDBName string
+	BackendURL    string
 )
 
 // Init opens connection to Mongo DB server. It impelments logic specific
@@ -18,31 +18,31 @@ var (
 // saved in the package state. They are in fact immutable after init.
 // Thet will be used to produce concrete connection to a database with an URL.
 func InitWithMongo(name, url string) error {
-	MongoDBName = name
-	MongURL = url
+	BackendDBName = name
+	BackendURL = url
 	return nil
 }
 
 // MongoBackend keeps the DB connecton state to perform DB operations.
 type MongoBackend struct {
-	client *mongo.Client
+	Client *mongo.Client
 	DBName string
 	URL    string
 }
 
 // WithMongo produces connection handle to be used in the trasactions.
-func WithMongo(name string) (*MongoBackend, error) {
-	opts := options.Client().ApplyURI(MongoURL)
+func WithMongo() (*MongoBackend, error) {
+	opts := options.Client().ApplyURI(BackendURL)
 	client, err := mongo.Connect(context.TODO(), opts)
 	if err != nil {
-		return nil, ErrClientConnect
+		return nil, ErrBackendClientConnect
 	}
 	if err := client.Ping(context.TODO(), readpref.Primary()); err != nil {
-		return nil, ErrClientPing
+		return nil, ErrBackendClientPing
 	}
 	backend := &MongoBackend{
-		client: client,
-		DBName: MongoDBName,
+		Client: client,
+		DBName: BackendDBName,
 	}
 	return backend, nil
 }
