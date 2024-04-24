@@ -2,6 +2,7 @@ package entity
 
 import (
 	"go-gin-server/internal/controller"
+	"os"
 	"testing"
 )
 
@@ -19,6 +20,16 @@ func Setup() {
 
 func TearDown() {
 	testDatabase.TearDown()
+}
+
+func TestMain(m *testing.M) {
+	Setup()
+
+	rc := m.Run()
+
+	TearDown()
+
+	os.Exit(rc)
 }
 
 func BenchmarkTagControllerCreate(b *testing.B) {
