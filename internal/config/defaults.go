@@ -9,8 +9,8 @@ const (
 	DefaultApplicationName   = "go-gin-server"
 	DefaultServerHTTPAddress = "localhost"
 	DefaultServerHTTPPort    = "8000"
-	DefaultLogLevel          = "INFO"
-	DefaultLogFormat         = "json"
+	DefaultLogLevel          = "DEBUG"
+	DefaultLogFormat         = "text"
 
 	// Log levels
 	LogLevelInfo  = "INFO"

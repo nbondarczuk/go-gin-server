@@ -36,6 +36,7 @@ func Init(version, level, format string) error {
 
 	attrs := &slog.HandlerOptions{
 		ReplaceAttr: replaceAttr,
+		Level:       l,
 	}
 
 	// Log format code check and creation of specific handler.
@@ -51,12 +52,10 @@ func Init(version, level, format string) error {
 	Logger = Logger.With(
 		slog.Group("proc",
 			slog.Int("pid", os.Getpid()),
-			slog.String("version", version),
 		),
 	)
 
 	slog.SetDefault(Logger)
-	slog.SetLogLoggerLevel(l)
 
 	return nil
 }

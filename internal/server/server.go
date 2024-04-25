@@ -56,7 +56,8 @@ func (s *Server) RegisterHandlers() {
 
 	// CRUD tag item operations
 	s.router.POST("/api/entity/tag", tag.CreateHandler)
-	s.router.GET("/api/entity/tag/:id", tag.ReadHandler)
+	s.router.GET("/api/entity/tag/:id", tag.ReadOneHandler)
+	s.router.GET("/api/entity/tags", tag.ReadHandler)
 	s.router.PUT("/api/entity/tag/:id", tag.UpdateHandler)
 	s.router.DELETE("/api/entity/tag/:id", tag.DeleteHandler)
 }

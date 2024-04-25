@@ -41,8 +41,8 @@ func CreateHandler(c *gin.Context) {
 	return
 }
 
-// ReadHandler reaks one or all records from the repository.
-func ReadHandler(c *gin.Context) {
+// ReadHOneandler reaks one or all records from the repository.
+func ReadOneHandler(c *gin.Context) {
 	// The controlle gives access to particular collection.
 	tc, err := entity.NewTagRepository()
 	if err != nil {
@@ -52,13 +52,32 @@ func ReadHandler(c *gin.Context) {
 		return
 	}
 	id := c.Param("id")
-	var rval any
-	// Dispatch in case the id was provided in the request.
-	if id != "" {
-		rval, err = tc.ReadOne(id)
-	} else {
-		rval, err = tc.ReadAll()
+	rval, err := tc.ReadOne(id)
+	if err != nil {
+		// Handle error in repository read operation.
+		c.JSON(http.StatusInternalServerError,
+			gin.H{"error": err.Error()})
+		return
 	}
+	r := map[string]interface{}{
+		"Status": "Ok",
+		"Object": rval,
+	}
+	c.JSON(http.StatusOK, r)
+	return
+}
+
+// ReadHandler reads one or all records from the repository.
+func ReadHandler(c *gin.Context) {
+	// The controlle gives access to particular collection.
+	tc, err := entity.NewTagRepository()
+	if err != nil {
+		// Handle error in repository allocation.
+		c.JSON(http.StatusInternalServerError,
+			gin.H{"error": err.Error()})
+		return
+	}
+	rval, err := tc.Read()
 	if err != nil {
 		// Handle error in repository read operation.
 		c.JSON(http.StatusInternalServerError,
@@ -98,7 +117,7 @@ func UpdateHandler(c *gin.Context) {
 			gin.H{"error": err.Error()})
 		return
 	}
-	err = tc.Update(id, &tag)
+	err = tc.UpdateOne(id, &tag)
 	r := map[string]interface{}{
 		"Status": "Ok",
 	}
@@ -123,7 +142,7 @@ func DeleteHandler(c *gin.Context) {
 			gin.H{"error": ErrEmptyTagId})
 		return
 	}
-	err = tc.Delete(id)
+	err = tc.DeleteOne(id)
 	if err != nil {
 		// Handle error in object deleteing.
 		c.JSON(http.StatusInternalServerError,
