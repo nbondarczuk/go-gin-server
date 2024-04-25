@@ -16,6 +16,9 @@ server:
 log:
   level: DEBUG2
   format: text2
+repsitory:
+  dbname: "mongo"
+  url: "mongodb://localhost:27017"
 `
 	makeTestConfigFile(t, input)
 	defer cleanupTestConfigFile(t)
@@ -27,4 +30,6 @@ log:
 	assert.Equal(t, 80902, options.GetInt("server.http.port"))
 	assert.Equal(t, "DEBUG2", options.GetString("log.level"))
 	assert.Equal(t, "text2", options.GetString("log.format"))
+	assert.Equal(t, "mongo", options.GetString("repository.dbname"))
+	assert.Equal(t, "mongodb://localhost:27017", options.GetString("repository.url"))
 }

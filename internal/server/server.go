@@ -22,7 +22,7 @@ type Server struct {
 // New creates server with gin framework.
 func New(version string) (*Server, error) {
 	system.SetVersion(version)
-	repository.InitWithMongo(config.BackendDBName(), config.BackendURL())
+	repository.InitWithMongo(config.RepositoryDBName(), config.RepositoryURL())
 	gin.SetMode(gin.ReleaseMode)
 
 	s := &Server{

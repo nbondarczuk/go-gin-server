@@ -22,10 +22,10 @@ func LogFormat() string {
 	return string(options.Viper.Get("log.format").(string))
 }
 
-func BackendDBName() string {
-	return string(options.Viper.Get("backend.dbname").(string))
+func RepositoryDBName() string {
+	return string(options.Viper.Get("repository.dbname").(string))
 }
 
-func BackendURL() string {
-	return string(options.Viper.Get("backend.url").(string))
+func RepositoryURL() string {
+	return string(options.Viper.Get("repository.url").(string))
 }

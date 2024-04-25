@@ -16,7 +16,7 @@ const (
 	LogLevelInfo  = "INFO"
 	LogLevelDebug = "DEBUG"
 
-	// backend
-	DefaultBackendDBName = "mongo"
-	DefaultBackendURL    = "mongodb://localhost:27017"
+	// repository
+	DefaultRepositoryDBName = "mongo"
+	DefaultRepositoryURL    = "mongodb://localhost:27017"
 )

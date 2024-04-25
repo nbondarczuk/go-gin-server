@@ -10,7 +10,6 @@ require (
 	github.com/stretchr/testify v1.9.0
 	github.com/testcontainers/testcontainers-go v0.30.0
 	go.mongodb.org/mongo-driver v1.15.0
-	honnef.co/go/tools v0.4.7
 )
 
 replace go-gin-server => ../go-gin-server
@@ -18,7 +17,6 @@ replace go-gin-server => ../go-gin-server
 require (
 	dario.cat/mergo v1.0.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
-	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/Microsoft/hcsshim v0.11.4 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect

@@ -50,8 +50,8 @@ func initDefaults() {
 	options.Viper.SetDefault("log.format", DefaultLogFormat)
 
 	// backend
-	options.Viper.SetDefault("backend.dbname", DefaultBackendDBName)
-	options.Viper.SetDefault("backend.url", DefaultBackendURL)
+	options.Viper.SetDefault("repository.dbname", DefaultRepositoryDBName)
+	options.Viper.SetDefault("repository.url", DefaultRepositoryURL)
 }
 
 func bindEnvVars() error {
@@ -76,11 +76,11 @@ func bindEnvVars() error {
 	if err != nil {
 		return err
 	}
-	err = options.Viper.BindEnv("backend.dbname", "BACKEND_DBNAME")
+	err = options.Viper.BindEnv("repository.dbname", "REPOSITORY_DBNAME")
 	if err != nil {
 		return err
 	}
-	err = options.Viper.BindEnv("backend.url", "BACKEND_URL")
+	err = options.Viper.BindEnv("repository.url", "REPOSITORY_URL")
 	if err != nil {
 		return err
 	}

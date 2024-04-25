@@ -2,10 +2,13 @@ package repository
 
 import (
 	"context"
+	"log/slog"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
+
+	"go-gin-server/internal/logging"
 )
 
 var (
@@ -37,9 +40,11 @@ func WithMongo() (*MongoRepository, error) {
 	if err != nil {
 		return nil, err
 	}
+	logging.Logger.Debug("Connected to Mongo DB", slog.String("url", URL))
 	if err := client.Ping(context.TODO(), readpref.Primary()); err != nil {
 		return nil, err
 	}
+	logging.Logger.Debug("Success pinging Mongo DB", slog.String("url", URL))
 	r := &MongoRepository{
 		Client: client,
 		DBName: DBName,

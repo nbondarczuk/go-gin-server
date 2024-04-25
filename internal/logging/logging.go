@@ -49,7 +49,7 @@ func Init(version, level, format string) error {
 	}
 
 	Logger = Logger.With(
-		slog.Group("process",
+		slog.Group("proc",
 			slog.Int("pid", os.Getpid()),
 			slog.String("version", version),
 		),

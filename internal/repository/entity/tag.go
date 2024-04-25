@@ -72,9 +72,13 @@ func (tc *TagRepository) ReadAll() ([]Tag, error) {
 }
 
 // ReadOne fetches one object by primary key.
-func (tc *TagRepository) ReadOne(oid string) (Tag, error) {
+func (tc *TagRepository) ReadOne(id string) (Tag, error) {
 	var tag Tag
-	err := tc.collection.FindOne(tc.ctx, bson.M{"_id": oid}).Decode(&tag)
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return Tag{}, err
+	}
+	err = tc.collection.FindOne(tc.ctx, bson.M{"_id": oid}).Decode(&tag)
 	if err != nil {
 		return Tag{}, err
 	}
@@ -82,9 +86,13 @@ func (tc *TagRepository) ReadOne(oid string) (Tag, error) {
 }
 
 // Update replaces all attributes of an existing object.
-func (tc *TagRepository) Update(oid string, tag *Tag) error {
+func (tc *TagRepository) Update(id string, tag *Tag) error {
 	updatedAt := time.Now()
-	_, err := tc.collection.UpdateOne(tc.ctx,
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	_, err = tc.collection.UpdateOne(tc.ctx,
 		bson.M{"_id": oid},
 		bson.D{{"$set",
 			bson.D{
@@ -99,8 +107,21 @@ func (tc *TagRepository) Update(oid string, tag *Tag) error {
 }
 
 // Delete removes an object from collection using primary key.
-func (tc *TagRepository) Delete(oid string) error {
-	_, err := tc.collection.DeleteOne(tc.ctx, bson.M{"_id": oid})
+func (tc *TagRepository) Delete(id string) error {
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	_, err = tc.collection.DeleteOne(tc.ctx, bson.M{"_id": oid})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Delete removes all objects from collection.
+func (tc *TagRepository) Drop() error {
+	err := tc.collection.Drop(tc.ctx)
 	if err != nil {
 		return err
 	}

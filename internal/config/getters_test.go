@@ -37,6 +37,16 @@ func TestGettersWithStringRV(t *testing.T) {
 			getter:   ServerHTTPPort,
 			expected: "80903",
 		},
+		{
+			label:    "RepositoryDBName",
+			getter:   RepositoryDBName,
+			expected: "mongo",
+		},
+		{
+			label:    "RepositoryURL",
+			getter:   RepositoryURL,
+			expected: "mongodb://localhost:27017",
+		},
 	}
 	input := `application:
   name: go-gin-server3
@@ -47,6 +57,9 @@ server:
 log:
   level: DEBUG3
   format: text3
+repsitory:
+  dbname: mongo
+  url: mongodb://localhost:27017
 `
 	makeTestConfigFile(t, input)
 	defer cleanupTestConfigFile(t)

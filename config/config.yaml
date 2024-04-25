@@ -7,6 +7,6 @@ server:
 log:
   level: DEBUG
   format: text
-backend:
-  dbname: "mongo"
-  uri: "mongodb://localhost:27017"
+repsitory:
+  dbname: mongo
+  url: mongodb://localhost:27017
