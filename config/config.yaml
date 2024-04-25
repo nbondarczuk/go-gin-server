@@ -7,3 +7,6 @@ server:
 log:
   level: DEBUG
   format: text
+repsitory:
+  dbname: mongo
+  url: mongodb://localhost:27017

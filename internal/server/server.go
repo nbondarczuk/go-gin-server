@@ -7,10 +7,11 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"go-gin-server/internal/config"
-	"go-gin-server/internal/handler"
+	"go-gin-server/internal/handler/system"
 	"go-gin-server/internal/handler/tag"
 	"go-gin-server/internal/logging"
 	"go-gin-server/internal/middleware"
+	"go-gin-server/internal/repository"
 )
 
 // Server links handlers to paths via routes.
@@ -20,8 +21,8 @@ type Server struct {
 
 // New creates server with gin framework.
 func New(version string) (*Server, error) {
-	handler.SetVersion(version)
-
+	system.SetVersion(version)
+	repository.InitWithMongo(config.RepositoryDBName(), config.RepositoryURL())
 	gin.SetMode(gin.ReleaseMode)
 
 	s := &Server{
@@ -49,13 +50,19 @@ func (s *Server) Run() error {
 // RegisterHandlers links handlers to API points.
 func (s *Server) RegisterHandlers() {
 	// System operations
-	s.router.GET("/health", handler.HealthHandler)
-	s.router.GET("/version", handler.VersionHandler)
-	s.router.GET("/metrics", gin.WrapH(promhttp.Handler()))
+	s.router.GET("/system/health", system.HealthHandler)
+	s.router.GET("/system/version", system.VersionHandler)
+	s.router.GET("/system/metrics", gin.WrapH(promhttp.Handler()))
 
 	// CRUD tag item operations
-	s.router.POST("/tag", tag.CreateHandler)
-	s.router.GET("/tag/:id", tag.ReadHandler)
-	s.router.PUT("/tag/:id", tag.UpdateHandler)
-	s.router.DELETE("/tag/:id", tag.DeleteHandler)
+
+	// by primary key access
+	s.router.POST("/api/entity/tag", tag.CreateHandler)
+	s.router.GET("/api/entity/tag/:id", tag.ReadOneHandler)
+	s.router.PUT("/api/entity/tag/:id", tag.UpdateHandler)
+	s.router.DELETE("/api/entity/tag/:id", tag.DeleteHandler)
+
+	// by bulk access
+	s.router.GET("/api/entity/tags", tag.ReadHandler)
+	s.router.DELETE("/api/entity/tags", tag.DropHandler)
 }

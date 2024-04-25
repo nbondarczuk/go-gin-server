@@ -26,7 +26,7 @@ func RequestLogger() gin.HandlerFunc {
 	}
 }
 
-// ResponseLogger is a response logger.
+// ResponseLogger logs response.
 func ResponseLogger() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("X-Content-Type-Options", "nosniff")

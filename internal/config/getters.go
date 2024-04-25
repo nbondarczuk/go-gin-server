@@ -21,3 +21,11 @@ func LogLevel() string {
 func LogFormat() string {
 	return string(options.Viper.Get("log.format").(string))
 }
+
+func RepositoryDBName() string {
+	return string(options.Viper.Get("repository.dbname").(string))
+}
+
+func RepositoryURL() string {
+	return string(options.Viper.Get("repository.url").(string))
+}
