@@ -55,9 +55,14 @@ func (s *Server) RegisterHandlers() {
 	s.router.GET("/system/metrics", gin.WrapH(promhttp.Handler()))
 
 	// CRUD tag item operations
+
+	// by primary key access
 	s.router.POST("/api/entity/tag", tag.CreateHandler)
 	s.router.GET("/api/entity/tag/:id", tag.ReadOneHandler)
-	s.router.GET("/api/entity/tags", tag.ReadHandler)
 	s.router.PUT("/api/entity/tag/:id", tag.UpdateHandler)
 	s.router.DELETE("/api/entity/tag/:id", tag.DeleteHandler)
+
+	// by bulk access
+	s.router.GET("/api/entity/tags", tag.ReadHandler)
+	s.router.DELETE("/api/entity/tags", tag.DropHandler)
 }

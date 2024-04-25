@@ -155,3 +155,27 @@ func DeleteHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, r)
 	return
 }
+
+// DropHandler removes an object from backend.
+func DropHandler(c *gin.Context) {
+	// The repository gives access to particular collection.
+	tc, err := entity.NewTagRepository()
+	if err != nil {
+		// Handle error in repository allocation.
+		c.JSON(http.StatusInternalServerError,
+			gin.H{"error": err.Error()})
+		return
+	}
+	err = tc.Drop()
+	if err != nil {
+		// Handle error in dropping the collection.
+		c.JSON(http.StatusInternalServerError,
+			gin.H{"error": err.Error()})
+		return
+	}
+	r := map[string]interface{}{
+		"Status": "Ok",
+	}
+	c.JSON(http.StatusOK, r)
+	return
+}

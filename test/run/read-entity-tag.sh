@@ -4,5 +4,5 @@ HOST=localhost
 PORT=8080
 URL=http://${HOST}:${PORT}/api/entity/tags
 CMD="curl $URL"
-echo Running commad: $CMD
+echo -n Running command: $CMD " - result: "
 eval $CMD
