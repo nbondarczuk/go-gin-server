@@ -7,11 +7,11 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"go-gin-server/internal/config"
-	"go-gin-server/internal/controller"
 	"go-gin-server/internal/handler/system"
 	"go-gin-server/internal/handler/tag"
 	"go-gin-server/internal/logging"
 	"go-gin-server/internal/middleware"
+	"go-gin-server/internal/repository"
 )
 
 // Server links handlers to paths via routes.
@@ -22,7 +22,7 @@ type Server struct {
 // New creates server with gin framework.
 func New(version string) (*Server, error) {
 	system.SetVersion(version)
-	controller.InitWithMongo(config.BackendDBName(), config.BackendURL())
+	repository.InitWithMongo(config.BackendDBName(), config.BackendURL())
 	gin.SetMode(gin.ReleaseMode)
 
 	s := &Server{

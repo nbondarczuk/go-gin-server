@@ -1,4 +1,4 @@
-package controller
+package repository
 
 import (
 	"context"
@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	RepositoryDBName string
-	RepositoryURL    string
+	DBName string
+	URL    string
 )
 
 // Init opens connection to Mongo DB server. It impelments logic specific
@@ -18,8 +18,8 @@ var (
 // saved in the package state. They are in fact immutable after init.
 // Thet will be used to produce concrete connection to a database with an URL.
 func InitWithMongo(name, url string) error {
-	RepositoryDBName = name
-	RepositoryURL = url
+	DBName = name
+	URL = url
 	return nil
 }
 
@@ -32,7 +32,7 @@ type MongoRepository struct {
 
 // WithMongo produces connection handle to be used in the DB operations.
 func WithMongo() (*MongoRepository, error) {
-	opts := options.Client().ApplyURI(RepositoryURL)
+	opts := options.Client().ApplyURI(URL)
 	client, err := mongo.Connect(context.TODO(), opts)
 	if err != nil {
 		return nil, err
@@ -42,7 +42,7 @@ func WithMongo() (*MongoRepository, error) {
 	}
 	r := &MongoRepository{
 		Client: client,
-		DBName: RepositoryDBName,
+		DBName: DBName,
 	}
 	return r, nil
 }

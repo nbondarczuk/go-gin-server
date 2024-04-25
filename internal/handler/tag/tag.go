@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"go-gin-server/internal/controller/entity"
+	"go-gin-server/internal/repository/entity"
 )
 
 // CreateHandler makes a new resource with given attributes.
@@ -19,9 +19,9 @@ func CreateHandler(c *gin.Context) {
 		return
 	}
 	// The controlle gives access to particular collection.
-	tc, err := entity.NewTagController()
+	tc, err := entity.NewTagRepository()
 	if err != nil {
-		// Handle error in controller allocation.
+		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError,
 			gin.H{"error": err.Error()})
 		return
@@ -41,12 +41,12 @@ func CreateHandler(c *gin.Context) {
 	return
 }
 
-// ReadHandler reaks one or all records from the controller.
+// ReadHandler reaks one or all records from the repository.
 func ReadHandler(c *gin.Context) {
 	// The controlle gives access to particular collection.
-	tc, err := entity.NewTagController()
+	tc, err := entity.NewTagRepository()
 	if err != nil {
-		// Handle error in controller allocation.
+		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError,
 			gin.H{"error": err.Error()})
 		return
@@ -60,7 +60,7 @@ func ReadHandler(c *gin.Context) {
 		rval, err = tc.ReadAll()
 	}
 	if err != nil {
-		// Handle error in controller read operation.
+		// Handle error in repository read operation.
 		c.JSON(http.StatusInternalServerError,
 			gin.H{"error": err.Error()})
 		return
@@ -76,9 +76,9 @@ func ReadHandler(c *gin.Context) {
 // UpdateHandler replaces lla attributes of a given object.
 func UpdateHandler(c *gin.Context) {
 	// The controlle gives access to particular collection.
-	tc, err := entity.NewTagController()
+	tc, err := entity.NewTagRepository()
 	if err != nil {
-		// Handle error in controller allocation.
+		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError,
 			gin.H{"error": err.Error()})
 		return
@@ -108,10 +108,10 @@ func UpdateHandler(c *gin.Context) {
 
 // DeleteHandler removes an object from backend.
 func DeleteHandler(c *gin.Context) {
-	// The controller gives access to particular collection.
-	tc, err := entity.NewTagController()
+	// The repository gives access to particular collection.
+	tc, err := entity.NewTagRepository()
 	if err != nil {
-		// Handle error in controller allocation.
+		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError,
 			gin.H{"error": err.Error()})
 		return
