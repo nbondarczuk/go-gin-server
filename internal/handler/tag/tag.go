@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"go-gin-server/internal/cache"
 	"go-gin-server/internal/repository/entity"
 )
 
@@ -43,8 +44,7 @@ func CreateHandler(c *gin.Context) {
 
 // ReadHOneandler reaks one or all records from the repository.
 func ReadOneHandler(c *gin.Context) {
-	// The controlle gives access to particular collection.
-	tc, err := entity.NewTagRepository()
+	cache, err := cache.NewTagCache()
 	if err != nil {
 		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError,
@@ -52,12 +52,29 @@ func ReadOneHandler(c *gin.Context) {
 		return
 	}
 	id := c.Param("id")
-	rval, err := tc.ReadOne(id)
+	rval, found, err := cache.Get(id)
 	if err != nil {
-		// Handle error in repository read operation.
+		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError,
 			gin.H{"error": err.Error()})
 		return
+	}
+	if !found {
+		// The controlle gives access to particular collection.
+		tc, err := entity.NewTagRepository()
+		if err != nil {
+			// Handle error in repository allocation.
+			c.JSON(http.StatusInternalServerError,
+				gin.H{"error": err.Error()})
+			return
+		}
+		rval, err = tc.ReadOne(id)
+		if err != nil {
+			// Handle error in repository read operation.
+			c.JSON(http.StatusInternalServerError,
+				gin.H{"error": err.Error()})
+			return
+		}
 	}
 	r := map[string]interface{}{
 		"Status": "Ok",
@@ -94,6 +111,13 @@ func ReadHandler(c *gin.Context) {
 
 // UpdateHandler replaces lla attributes of a given object.
 func UpdateHandler(c *gin.Context) {
+	cache, err := cache.NewTagCache()
+	if err != nil {
+		// Handle error in repository allocation.
+		c.JSON(http.StatusInternalServerError,
+			gin.H{"error": err.Error()})
+		return
+	}
 	// The controlle gives access to particular collection.
 	tc, err := entity.NewTagRepository()
 	if err != nil {
@@ -117,6 +141,13 @@ func UpdateHandler(c *gin.Context) {
 			gin.H{"error": err.Error()})
 		return
 	}
+	err = cache.Flush(id)
+	if err != nil {
+		// Handle error in repository allocation.
+		c.JSON(http.StatusInternalServerError,
+			gin.H{"error": err.Error()})
+		return
+	}
 	err = tc.UpdateOne(id, &tag)
 	r := map[string]interface{}{
 		"Status": "Ok",
@@ -127,6 +158,13 @@ func UpdateHandler(c *gin.Context) {
 
 // DeleteHandler removes an object from backend.
 func DeleteHandler(c *gin.Context) {
+	cache, err := cache.NewTagCache()
+	if err != nil {
+		// Handle error in repository allocation.
+		c.JSON(http.StatusInternalServerError,
+			gin.H{"error": err.Error()})
+		return
+	}
 	// The repository gives access to particular collection.
 	tc, err := entity.NewTagRepository()
 	if err != nil {
@@ -140,6 +178,13 @@ func DeleteHandler(c *gin.Context) {
 		// Handle error in request without a parameter.
 		c.JSON(http.StatusBadRequest,
 			gin.H{"error": ErrEmptyTagId})
+		return
+	}
+	err = cache.Flush(id)
+	if err != nil {
+		// Handle error in repository allocation.
+		c.JSON(http.StatusInternalServerError,
+			gin.H{"error": err.Error()})
 		return
 	}
 	err = tc.DeleteOne(id)
@@ -158,8 +203,22 @@ func DeleteHandler(c *gin.Context) {
 
 // DropHandler removes an object from backend.
 func DropHandler(c *gin.Context) {
+	cache, err := cache.NewTagCache()
+	if err != nil {
+		// Handle error in repository allocation.
+		c.JSON(http.StatusInternalServerError,
+			gin.H{"error": err.Error()})
+		return
+	}
 	// The repository gives access to particular collection.
 	tc, err := entity.NewTagRepository()
+	if err != nil {
+		// Handle error in repository allocation.
+		c.JSON(http.StatusInternalServerError,
+			gin.H{"error": err.Error()})
+		return
+	}
+	err = cache.Purge()
 	if err != nil {
 		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError,

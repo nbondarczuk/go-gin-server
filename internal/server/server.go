@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
+	"go-gin-server/internal/cache"
 	"go-gin-server/internal/config"
 	"go-gin-server/internal/handler/system"
 	"go-gin-server/internal/handler/tag"
@@ -23,6 +24,7 @@ type Server struct {
 func New(version string) (*Server, error) {
 	system.SetVersion(version)
 	repository.InitWithMongo(config.RepositoryDBName(), config.RepositoryURL())
+	cache.InitWithRedis(config.CacheRedisAddress(), config.CacheRedisPassword(), config.CacheRedisDB())
 	gin.SetMode(gin.ReleaseMode)
 
 	s := &Server{

@@ -47,6 +47,22 @@ func TestGettersWithStringRV(t *testing.T) {
 			getter:   RepositoryURL,
 			expected: "mongodb://localhost:27017",
 		},
+
+		{
+			label:    "CacheRedisAddress",
+			getter:   CacheRedisAddress,
+			expected: "127.0.0.1:6379",
+		},
+		{
+			label:    "CacheRedisPassword",
+			getter:   CacheRedisPassword,
+			expected: "abc",
+		},
+		{
+			label:    "CacheRedisDB",
+			getter:   CacheRedisDB,
+			expected: "0",
+		},
 	}
 	input := `application:
   name: go-gin-server3
@@ -60,6 +76,11 @@ log:
 repsitory:
   dbname: mongo
   url: mongodb://localhost:27017
+cache:
+  redis:
+    address: 127.0.0.1:6379
+    password: abc
+    db: 0
 `
 	makeTestConfigFile(t, input)
 	defer cleanupTestConfigFile(t)
