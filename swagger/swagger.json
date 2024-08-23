@@ -1,0 +1,206 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "Generic Gin Server API",
+    "contact": {
+      "email": "nbondarczuk@yahoo.com"
+    },
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "paths": {
+    "/api/entity/tag": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "tag"
+        ],
+        "summary": "Creates new tag in the repository.",
+        "operationId": "CreateHandler",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/entity/tag/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "tag"
+        ],
+        "summary": "Reads one one tag from repository.",
+        "operationId": "ReadOneHandler",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "ID of the tag",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "tag"
+        ],
+        "summary": "Deletes one tag from repository.",
+        "operationId": "DeleteHandler",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "ID of the tag",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "tag"
+        ],
+        "summary": "Reads one one tag from repository.",
+        "operationId": "UpdateHandler",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "ID of the tag",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/entity/tags": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "tag"
+        ],
+        "summary": "Reads some tags from repository.",
+        "operationId": "ReadHandler",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "tag"
+        ],
+        "summary": "Drops collection from repository.",
+        "operationId": "DropHandler",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "ID of the tag",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}

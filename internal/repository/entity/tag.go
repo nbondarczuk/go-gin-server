@@ -17,11 +17,27 @@ import (
 const TagCollectionName = "tag"
 
 // Tag is the entity mnaged by the repository.
+// swagger:model tag
 type Tag struct {
+	// the id of the tag
+	// required: true
 	ID      primitive.ObjectID `json:"id" bson:"_id"`
+
+	// label of the tag
+	// required : true
 	Label   string             `json:"label" bson:"label"`
+
+	// color of the tag
+	// required: false
+	// example: red green blue
 	Color   string             `json:"color" bson:"color"`
+
+	// date of creation of the tag
+	// required: true
 	Created time.Time          `json:"created" bson:"created"`
+
+	// date of the tag update
+	// required: false
 	Updated time.Time          `json:"updated" bson:"updated"`
 }
 

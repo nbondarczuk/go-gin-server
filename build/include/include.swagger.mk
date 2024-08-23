@@ -6,13 +6,13 @@ swagger/pull:
 	@docker pull quay.io/goswagger/swagger
 
 swagger/version:
-	@$(SWAGGER_TOOL_PATH)/swagger.sh version
+	bash -e $(SCRIPTS_PATH)/swagger.sh version
 
 swagger/generate:
-	@$(SWAGGER_TOOL_PATH)/swagger.sh generate
+	$(SCRIPTS_PATH)/swagger.sh generate spec -o /opt/work/swagger/swagger.json -w /opt/work
 
 swagger/serve:
-	@$(SWAGGER_TOOL_PATH)/swagger.sh serve
+	$(SCRIPTS_PATH)/swagger.sh serve -F swagger /opt/work/swagger/swagger.json -p 8080 --no-open
 
 swagger/help:
 	@echo

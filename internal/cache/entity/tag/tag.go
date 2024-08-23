@@ -1,17 +1,21 @@
-package cache
+package tag
 
 import (
+	"encoding/json"
+	"go-gin-server/internal/cache"
 	"go-gin-server/internal/repository/entity"
 )
 
+const EntityName = "tag"
+
 type TagCache struct {
-	cache *Redis
+	cache *cache.Redis
 }
 
 // NewTagCache uses the connection allocated in the init of the cache module.
 // It does not open each connection per request but it reuses the initial one.
 func NewTagCache() (*TagCache, error) {
-	cache, err := WithRedis()
+	cache, err := cache.WithRedis()
 	if err != nil {
 		return nil, err
 	}
@@ -21,8 +25,14 @@ func NewTagCache() (*TagCache, error) {
 }
 
 // Check does a dive into the redis cache for an id.
-func (tc *TagCache) Get(id string) (entity.Tag, bool, error) {
-	return entity.Tag{}, false, nil
+func (tc *TagCache) Check(id string) (entity.Tag, bool, error) {
+	val, err := tc.cache.Client.Get(EntityName).Result()
+	if err != nil {
+		return entity.Tag{}, false, err
+	}
+	var tag entity.Tag
+	json.Unmarshal([]byte(val), &tag)
+	return tag, true, nil
 }
 
 // Flush purges cache for single element, when it was modified or deleted.

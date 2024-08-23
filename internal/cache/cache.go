@@ -13,6 +13,7 @@ var (
 	Password string
 	DB       int
 	Client   *redis.Client
+	EntityName string
 )
 
 type Redis struct {
