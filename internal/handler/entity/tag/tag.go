@@ -5,8 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"go-gin-server/internal/cache/entity/tag"
-	"go-gin-server/internal/repository/entity"
+	cache "go-gin-server/internal/cache/entity/tag"
+	repository "go-gin-server/internal/repository/entity/tag"
 )
 
 // CreateHandler creates a new tag with given attributes.
@@ -26,7 +26,7 @@ import (
 //	   description: Internal Server Error
 //
 func CreateHandler(c *gin.Context) {
-	var tag entity.Tag
+	var tag repository.Tag
 	// Check input ie. new object attributes from request body.
 	if err := c.ShouldBindJSON(&tag); err != nil {
 		// Handle error in request body.
@@ -34,7 +34,7 @@ func CreateHandler(c *gin.Context) {
 		return
 	}
 	// The controller gives access to particular collection.
-	tc, err := entity.NewTagRepository()
+	tc, err := repository.NewTagRepository()
 	if err != nil {
 		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -82,7 +82,7 @@ func ReadOneHandler(c *gin.Context) {
 	if id == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Empty tag id provided"})
 	}
-	cache, err := tag.NewTagCache()
+	cache, err := cache.NewTagCache()
 	if err != nil {
 		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -96,7 +96,7 @@ func ReadOneHandler(c *gin.Context) {
 	}
 	if !found {
 		// The controlle gives access to particular collection.
-		tc, err := entity.NewTagRepository()
+		tc, err := repository.NewTagRepository()
 		if err != nil {
 			// Handle error in repository allocation.
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -141,14 +141,14 @@ func ReadOneHandler(c *gin.Context) {
 //	   description: Internal Server Error
 //
 func UpdateHandler(c *gin.Context) {
-	cache, err := tag.NewTagCache()
+	ca, err := cache.NewTagCache()
 	if err != nil {
 		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	// The controlle gives access to particular collection.
-	tc, err := entity.NewTagRepository()
+	tc, err := repository.NewTagRepository()
 	if err != nil {
 		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -160,14 +160,14 @@ func UpdateHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": ErrEmptyTagId})
 		return
 	}
-	var tag entity.Tag
+	var tag repository.Tag
 	// Check input ie. new object attributes from request body.
 	if err := c.ShouldBindJSON(&tag); err != nil {
 		// Handle error in request body.
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = cache.Flush(id)
+	err = ca.Flush(id)
 	if err != nil {
 		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -205,14 +205,14 @@ func UpdateHandler(c *gin.Context) {
 //	   description: Internal Server Error
 //
 func DeleteHandler(c *gin.Context) {
-	cache, err := tag.NewTagCache()
+	ca, err := cache.NewTagCache()
 	if err != nil {
 		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	// The repository gives access to particular collection.
-	tc, err := entity.NewTagRepository()
+	tc, err := repository.NewTagRepository()
 	if err != nil {
 		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -224,7 +224,7 @@ func DeleteHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": ErrEmptyTagId})
 		return
 	}
-	err = cache.Flush(id)
+	err = ca.Flush(id)
 	if err != nil {
 		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -262,7 +262,7 @@ func DeleteHandler(c *gin.Context) {
 //
 func ReadHandler(c *gin.Context) {
 	// The controlle gives access to particular collection.
-	tc, err := entity.NewTagRepository()
+	tc, err := repository.NewTagRepository()
 	if err != nil {
 		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -306,20 +306,20 @@ func ReadHandler(c *gin.Context) {
 //	   description: Internal Server Error
 //
 func DropHandler(c *gin.Context) {
-	cache, err := tag.NewTagCache()
+	ca, err := cache.NewTagCache()
 	if err != nil {
 		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	// The repository gives access to particular collection.
-	tc, err := entity.NewTagRepository()
+	tc, err := repository.NewTagRepository()
 	if err != nil {
 		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	err = cache.Purge()
+	err = ca.Purge()
 	if err != nil {
 		// Handle error in repository allocation.
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

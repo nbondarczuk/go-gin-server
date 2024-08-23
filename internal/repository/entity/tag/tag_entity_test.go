@@ -1,4 +1,4 @@
-package entity
+package tag
 
 import (
 	"os"

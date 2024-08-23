@@ -9,7 +9,7 @@ import (
 	"go-gin-server/internal/cache"
 	"go-gin-server/internal/config"
 	"go-gin-server/internal/handler/system"
-	"go-gin-server/internal/handler/tag"
+	"go-gin-server/internal/handler/entity/tag"
 	"go-gin-server/internal/logging"
 	"go-gin-server/internal/middleware"
 	"go-gin-server/internal/repository"
@@ -51,20 +51,21 @@ func (s *Server) Run() error {
 
 // RegisterHandlers links handlers to API points.
 func (s *Server) RegisterHandlers() {
+	s.router.GET("/metrics", gin.WrapH(promhttp.Handler()))
+
 	// System operations
 	s.router.GET("/system/health", system.HealthHandler)
 	s.router.GET("/system/version", system.VersionHandler)
-	s.router.GET("/system/metrics", gin.WrapH(promhttp.Handler()))
 
 	// CRUD tag item operations
 
 	// by primary key access
-	s.router.POST("/api/entity/tag", tag.CreateHandler)
-	s.router.GET("/api/entity/tag/:id", tag.ReadOneHandler)
-	s.router.PUT("/api/entity/tag/:id", tag.UpdateHandler)
-	s.router.DELETE("/api/entity/tag/:id", tag.DeleteHandler)
+	s.router.POST("/entity/tag", tag.CreateHandler)
+	s.router.GET("/entity/tag/:id", tag.ReadOneHandler)
+	s.router.PUT("/entity/tag/:id", tag.UpdateHandler)
+	s.router.DELETE("/entity/tag/:id", tag.DeleteHandler)
 
 	// by bulk access
-	s.router.GET("/api/entity/tags", tag.ReadHandler)
-	s.router.DELETE("/api/entity/tags", tag.DropHandler)
+	s.router.GET("/entity/tags", tag.ReadHandler)
+	s.router.DELETE("/entity/tags", tag.DropHandler)
 }
